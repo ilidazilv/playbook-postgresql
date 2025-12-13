@@ -26,7 +26,6 @@ public abstract class DateFilterAdapter<T extends Temporal & Serializable & Comp
     private void resolveGenericTypes() {
         Type genericSuperclass = getClass().getGenericSuperclass();
 
-        // Handle cases where the class might be proxied (e.g. by Spring CGLIB)
         while (!(genericSuperclass instanceof ParameterizedType type)) {
             // Move up the hierarchy if we are inside a proxy or raw subclass
             genericSuperclass = ((Class<?>) genericSuperclass).getGenericSuperclass();
