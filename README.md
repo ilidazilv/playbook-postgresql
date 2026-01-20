@@ -26,10 +26,10 @@ This approach allows you to build complex queries with multiple conditions, incl
 - [x] **Field Config:** Customize mapping between filter fields and database columns.
 - [x] **Subtable Filtering (One-to-One, Many-to-One):** Filter on related entities.
 - [x] **`playbookFind` Method:** A convenient method for executing the generated query.
+- [x] **Many-to-Many, One-to-Many Filters:** Extend subtable filtering to support more complex relationships.
 
 ### Todo
 
-- [ ] **Many-to-Many, One-to-Many Filters:** Extend subtable filtering to support more complex relationships.
 - [ ] **`count` and `findById` Methods:** Add support for counting results and retrieving single entities by ID.
 - [ ] **Enrich List of Filters:** Expand the set of available filter types for both base and list types.
 

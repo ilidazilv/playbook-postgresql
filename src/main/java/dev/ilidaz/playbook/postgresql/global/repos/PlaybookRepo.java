@@ -64,7 +64,7 @@ public abstract class PlaybookRepo<E, I, F> implements PanacheRepositoryBase<E, 
 
         Map<String, From<?, ?>> subtables = new HashMap<>();
 
-        List<Predicate> predicates = baseFilterService.generatePredicates(filters, cb, root, subtables, "");
+        List<Predicate> predicates = baseFilterService.generatePredicates(filters, cb, root, subtables, "", cq);
 
         // 2. Convert the List<Predicate> to an Array
         Predicate[] predicateArray = predicates.toArray(new Predicate[0]);
@@ -80,5 +80,29 @@ public abstract class PlaybookRepo<E, I, F> implements PanacheRepositoryBase<E, 
 
         // 5. Execute the query
         return typedQuery.setFirstResult(page * size).setMaxResults(size).getResultList();
+    }
+
+    public Long playbookCount(F filters) {
+        // 1. Get the Builder and Query objects
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<E> root = cq.from(entityClass);
+
+        Map<String, From<?, ?>> subtables = new HashMap<>();
+
+        List<Predicate> predicates = baseFilterService.generatePredicates(filters, cb, root, subtables, "", cq);
+
+        // 2. Convert the List<Predicate> to an Array
+        Predicate[] predicateArray = predicates.toArray(new Predicate[0]);
+
+        // 3. Combine Predicates using AND
+        // This creates a single combined condition: (p1 AND p2 AND p3...)
+        Predicate finalWhereClause = cb.and(predicateArray);
+
+        // 4. Apply the combined Predicate to the query
+        cq.select(cb.count(root.get(idFieldName))).where(finalWhereClause);
+
+        // 5. Execute the query
+        return getEntityManager().createQuery(cq).getSingleResult();
     }
 }
